@@ -1,0 +1,140 @@
+html, body{
+  height:100%;
+  width:100%;
+  padding: 0;
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: 1px;
+}
+h1{
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  text-align: left;
+  font-size: 32px;
+  text-transform: uppercase;
+  padding-top: 20px;
+  padding-right: 15px;
+  padding-left: 15px;
+  line-height: 40px;
+  margin-right: 40px;
+  width: 100%;
+}
+h2{
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  text-align: left;
+  font-size: 32px;
+  text-transform: uppercase;
+  padding-top: 25%;
+  padding-left: 15%;
+  line-height: 35px;
+  margin-right: 40px;
+  width: 70%;
+  padding-right: 15%;
+  padding-bottom: 5%;
+  border: thick solid #FFFFFF;
+  min-width: 80%;
+}
+h4{
+  font-family: 'Open Sans', sans-serif;
+  text-align: left;
+  font-size: 30px;
+  color: #8DCFDE;
+  line-height: 27px;
+  margin-left: 10px;
+  margin-bottom: 0px;
+  max-width: 40%;
+  text-transform: uppercase;
+}
+h3{
+  font-family: 'Open Sans', sans-serif;
+  font-size: 69px;
+  font-style: italic;
+  text-transform: uppercase;
+  line-height: 57px;
+}
+p{
+  text-align: left;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: normal;
+  margin-right: 30px;
+  line-height: 20px;
+  font-size: 12px;
+  margin-left: 15px;
+  word-spacing: 105%;
+  letter-spacing: 105%;
+}
+img{
+  max-width: 100%;
+}
+
+/*#narration{
+  float: left;
+  width:35%;
+}*/
+
+#map{
+    width: 100%; 
+    height: 100%; 
+    background: none;
+    position: fixed; 
+    right: 0;
+    top: 0;   
+}
+
+#spacer{
+  min-height: 500px;
+}
+
+.active{
+  /*background-color: #026699;*/
+  color: white;
+}
+.contents{
+  padding: 15px;
+}
+
+a{
+  color: darkgray;
+}
+
+.north.active{
+  background-color: #026699;
+}
+
+.south.active{
+  background-color: #ffb23e;
+}
+
+.significant.active{
+  background-color: #48956b;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+.legend {
+    line-height: 18px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+
+
