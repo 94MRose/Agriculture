@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Add Leaflet CSS and Javascript -->
+
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+
+<!-- Add JQuery -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>  
+
+<link rel="stylesheet" href="CSS/storymap.css" />
+
+<!-- Geometric Data -->
+<script src='Data/Landuse.geojson'></script>
+<script src='Data/TLB Expenses.geojson'></script>
+
+</head>
+
+<body>
+  <div style="width: 100%;">
+  <img style="width: 30%;" src="Images/TLB_Expenses.png">
+  <img style="width: 30%;" src="Images/Ontario_Expenses.png">
+  <img style="width: 30%;" src="Images/Canada_Expenses.png">
+</div>
+
+<form action="#n" name="theForm" onchange="info.update()">
+
+    <label for="year">Year: </label>
+    <input type="radio" name="yearS" value="2006" checked> 2006
+    <input type="radio" name="yearS" value="2011" > 2011
+    <input type="radio" name="yearS" value="2016" > 2016<br><br>
+
+</form>
+
+<div id="map2"></div>
+  <script>
+    var map = L.map('map2').setView([44.7389, -78.3922], 8);
+
+    L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    subdomains: ['a','b','c']
+}).addTo( map );
+
+    var geojson;
+    var year = 2006;
+    var lastTarget;
+
+    function getColor(val, type) {
+        
+       if(type == "2006"){
+        return val < 29050 ? "#1a9641":
+        val < 45750 ? "#a6d96a":
+        val < 62450 ? "#ffffc0":
+        val < 79150 ? "#fdae61":
+        "#d7191c";
+       }
+       if(type == "2011"){
+        return val < 30300 ? "#1a9641":
+        val < 47614 ? "#a6d96a":
+        val < 64928 ? "#ffffc0":
+        val < 82242 ? "#fdae61":
+        "#d7191c";
+       }
+       if(type == "2016"){
+        return val < 42863 ? "#1a9641":
+        val < 77111 ? "#a6d96a":
+        val < 111359 ? "#ffffc0":
+        val < 145607 ? "#fdae61":
+        "#d7191c";
+       }
+
+    }
+
+    function style(feature) {  
+    if(year == 2006)  {
+      return{
+        fillColor: getColor(feature.properties.Expense2006, "2006"),
+        weight: 2,
+        opacity: 1,
+        color: 'black',
+        fillOpacity: 0.7
+      };
+    }  
+    if(year == 2011)  {
+      return{
+        fillColor: getColor(feature.properties.Expense2011, "2011"),
+        weight: 2,
+        opacity: 1,
+        color: 'black',
+        fillOpacity: 0.7
+      };
+    }  
+    if(year == 2016)  {
+      return{
+        fillColor: getColor(feature.properties.Expense2016, "2016"),
+        weight: 2,
+        opacity: 1,
+        color: 'black',
+        fillOpacity: 0.7
+      };
+    }  
+      
+    }
+
+    geojson = L.geoJson(expense, {
+    style: style,
+    onEachFeature: onEachFeature
+}).addTo(map);
+
+    //Setup for info panel
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+   year = document.querySelector('input[name="yearS"]:checked').value;
+   geojson.setStyle(style);
+
+
+   if(year== 2006){
+    this._div.innerHTML = '<h5>Expenses Per Farm 2006</h5>' + (props ? "Regional Average Expenses: $" + props.Expense2006 + '<br /> ' + "TLB average is $52,325" + "<br /> Ontario average is $154,584" + "<br /> Canada average is $158,852"
+        : 'Select a region');
+   }
+   else if(year== 2011){
+    this._div.innerHTML = '<h5>Expenses Per Farm 2011</h5>' + (props ? "Regional Average Expenses: $" + props.Expense2011 + '<br /> ' + "TLB average is $63,104" + "<br /> Ontario average is $191,836" + "<br /> Canada average is $205,080"
+        : 'Select a region');
+   }
+   else if(year== 2016){
+    this._div.innerHTML = '<h5>Expenses Per Farm 2016</h5>' + (props ? "Regional Average Expenses: $" + props.Expense2016 + '<br /> ' + "TLB average is $87,241" + "<br /> Ontario average is $257,862" + "<br /> Canada average is $296,961"
+        : 'Select a region');
+   }
+         
+    }
+
+info.addTo(map);
+
+function onEachFeature(feature, layer) {
+    
+    layer.on({
+        click: highlightFeature
+    });
+}
+
+function highlightFeature(e) {
+    var layer = e.target;
+    
+    info.update(layer.feature.properties);
+    
+    geojson.resetStyle(lastTarget);
+  
+
+    layer.setStyle({
+        weight: 5,
+        color: '#FFF',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+    
+
+    lastTarget = layer;
+}
+
+</script>
+
+
+</body>
+</html>
