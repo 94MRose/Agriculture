@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Add Leaflet CSS and Javascript -->
+
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+
+<!-- Add JQuery -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>  
+
+<link rel="stylesheet" href="CSS/storymap.css" />
+
+<!-- Geometric Data -->
+<script src='Data/TLBVegCount.geojson'></script>
+<script src='Data/TLB Expenses.geojson'></script>
+
+</head>
+
+<body>
+
+<form action="#n" name="theForm" onchange="info.update()">
+
+    <label for="year">Year: </label>
+    <input type="radio" name="yearS" value="2006" checked> 2006
+    <input type="radio" name="yearS" value="2011" > 2011
+    <input type="radio" name="yearS" value="2016" > 2016
+    <input type="radio" name="yearS" value="2021" > 2021<br><br>
+
+</form>
+
+<div id="map2"></div>
+  <script>
+    var map = L.map('map2').setView([44.7389, -78.3922], 8);
+
+    L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    subdomains: ['a','b','c']
+}).addTo( map );
+
+    var geojson;
+    var year = 2006;
+    var lastTarget;
+
+    // function getColor(val, type) {
+        
+    //    if(type == "2006"){
+    //     // return val < 29050 ? "#1a9641":
+    //     // val < 45750 ? "#a6d96a":
+    //     // val < 62450 ? "#ffffc0":
+    //     // val < 79150 ? "#fdae61":
+    //     // "#d7191c";
+    //     return "#1a9641";
+    //    }
+    //    if(type == "2011"){
+    //     return val < 30300 ? "#1a9641":
+    //     val < 47614 ? "#a6d96a":
+    //     val < 64928 ? "#ffffc0":
+    //     val < 82242 ? "#fdae61":
+    //     "#d7191c";
+    //    }
+    //    if(type == "2016"){
+    //     return val < 42863 ? "#1a9641":
+    //     val < 77111 ? "#a6d96a":
+    //     val < 111359 ? "#ffffc0":
+    //     val < 145607 ? "#fdae61":
+    //     "#d7191c";
+    //    }
+
+    // }
+
+    function getColor(val, type) {
+        
+        vegetables = ["Sweet Corn", "Tomatoes", "Cucumbers", "Grean Peas", "Green Beans", "Cabbage", "Chinese Cabbage", "Cauliflower", "Broccoli", "Brussel Sprouts", "Carrots", "Turnips", "Beets", "Radishes", "Shallots", "Onions", "Peppers", "Pumpkins", "Squash", "Asparagus"];
+        color = '#FFFFFF';
+        topVeg = 0;
+        max = 0;
+       if(type == "2006"){
+        // color = '#FFFFFF';
+        // topVeg = 0;
+        // max = val.v2006_SweetCorn;
+        values = [val.v2006_SweetCorn, val.v2006_Tomatoes, val.v2006_Cucumbers, val.v2006_GreenPea, val.v2006_GreenBeans, val.v2006_Cabbage, val.v2006_ChineseCabbage, val.v2006_Cauliflower, val.v2006_Broccoli, val.v2006_BrusselSprouts, val.v2006_Carrots, val.v2006_Turnips, val.v2006_Beets, val.v2006_Radishes, val.v2006_Shallots, val.v2006_Onions, val.v2006_Celery, val.v2006_Lettuce, val.v2006_Spinach, val.v2006_Peppers, val.v2006_Pumpkins, val.v2006_Squash, val.v2006_Asparagus];
+
+        // console.log(val.CCSNAME)
+        // console.log(vegetables[topVeg]);
+        // console.log(max);
+               
+       }
+       if(type == "2011"){
+        values = [val.v2011_SweetCorn, val.v2011_Tomatoes, val.v2011_Cucumbers, val.v2011_GreenPea, val.v2011_GreenBeans, val.v2011_Cabbage, val.v2011_ChineseCabbage, val.v2011_Cauliflower, val.v2011_Broccoli, val.v2011_BrusselSprouts, val.v2011_Carrots, val.v2011_Turnips, val.v2011_Beets, val.v2011_Radishes, val.v2011_Shallots, val.v2011_Onions, val.v2011_Celery, val.v2011_Lettuce, val.v2011_Spinach, val.v2011_Peppers, val.v2011_Pumpkins, val.v2011_Squash, val.v2011_Asparagus];
+        
+       }
+       if(type == "2016"){
+        values = [val.v2016_SweetCorn, val.v2016_Tomatoes, val.v2016_Cucumbers, val.v2016_GreenPea, val.v2016_GreenBeans, val.v2016_Cabbage, val.v2016_ChineseCabbage, val.v2016_Cauliflower, val.v2016_Broccoli, val.v2016_BrusselSprouts, val.v2016_Carrots, val.v2016_Turnips, val.v2016_Beets, val.v2016_Radishes, val.v2016_Shallots, val.v2016_Onions, val.v2016_Celery, val.v2016_Lettuce, val.v2016_Spinach, val.v2016_Peppers, val.v2016_Pumpkins, val.v2016_Squash, val.v2016_Asparagus];
+       }
+       if(type == "2021"){
+        values = [val.v2021_SweetCorn, val.v2021_Tomatoes, val.v2021_Cucumbers, val.v2021_GreenPea, val.v2021_GreenBeans, val.v2021_Cabbage, val.v2021_ChineseCabbage, val.v2021_Cauliflower, val.v2021_Broccoli, val.v2021_BrusselSprouts, val.v2021_Carrots, val.v2021_Turnips, val.v2021_Beets, val.v2021_Radishes, val.v2021_Shallots, val.v2021_Onions, val.v2021_Celery, val.v2021_Lettuce, val.v2021_Spinach, val.v2021_Peppers, val.v2021_Pumpkins, val.v2021_Squash, val.v2021_Asparagus];
+       }
+
+        for(i=0; i<values.length; i++){
+            if(values[i]>max){
+                max = values[i];
+                topVeg = i;
+            }
+        }
+       switch (vegetables[topVeg]){
+            case "Sweet Corn":
+                color = "#f9f32d"
+                break;
+            case "Tomatoes":
+                color = "#c6413f"
+                break;
+            case "Cucumbers":
+                color = "#56a774"
+                break;
+            case "Grean Peas":
+                color = "#459410"
+                break;
+            case "Green Beans":
+                color = "#4cd499"
+                break;
+            case "Cabbage":
+                color = "#d87144"
+                break;
+            case "Chinese Cabbage":
+                color = "#b44733"
+                break;
+            case "Cauliflower":
+                color = "#ada4b7"
+                break;
+            case "Broccoli":
+                color = "#4538d8"
+                break;
+            case "Brussel Sprouts":
+                color = "#7c9d2e"
+                break;
+            case "Carrots":
+                color = "#cd8417"
+                break;
+            case "Turnips":
+                color = "#b022d3"
+                break;
+            case "Beets":
+                color = "#6a0b5a"
+                break;
+            case "Radishes":
+                color = "#d15c65"
+                break;
+            case "Shallots":
+                color = "#25842b"
+                break;
+            case "Onions":
+                color = "#81c747"
+                break;
+            case "Peppers":
+                color = "#d682d6"
+                break;
+            case "Pumpkins":
+                color = "#f6a211"
+                break;
+            case "Squash":
+                color = "#c970cf"
+                break;
+            case "Asparagus":
+                color = "#6090e2"
+                break;
+        }
+        return color;
+
+    }
+
+    function style(feature) {  
+    if(year == 2006)  {
+      return{
+        fillColor: getColor(feature.properties, "2006"),
+        weight: 2,
+        opacity: 1,
+        color: 'black',
+        fillOpacity: 0.7
+      };
+    }  
+    if(year == 2011)  {
+      return{
+        fillColor: getColor(feature.properties, "2011"),
+        weight: 2,
+        opacity: 1,
+        color: 'black',
+        fillOpacity: 0.7
+      };
+    }  
+    if(year == 2016)  {
+      return{
+        fillColor: getColor(feature.properties, "2016"),
+        weight: 2,
+        opacity: 1,
+        color: 'black',
+        fillOpacity: 0.7
+      };
+    }  
+    if(year == 2021)  {
+      return{
+        fillColor: getColor(feature.properties, "2021"),
+        weight: 2,
+        opacity: 1,
+        color: 'black',
+        fillOpacity: 0.7
+      };
+    }  
+      
+    }
+
+    geojson = L.geoJson(veg, {
+    style: style,
+    onEachFeature: onEachFeature
+}).addTo(map);
+
+    //Setup for info panel
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+   year = document.querySelector('input[name="yearS"]:checked').value;
+   geojson.setStyle(style);
+
+
+   if(year== 2006){
+    this._div.innerHTML = '<h5>Veg Farm 2006</h5>' + (props ? "Total: " + props.v2006_Total
+        : 'Select a region');
+   }
+   else if(year== 2011){
+    this._div.innerHTML = '<h5>Veg Farm 2011</h5>' + (props ? "Total: " + props.v2011_Total
+        : 'Select a region');
+   }
+   else if(year== 2016){
+    this._div.innerHTML = '<h5>Veg Farm 2016</h5>' + (props ? "Total: " + props.v2016_Total
+        : 'Select a region');
+   }
+   else if(year== 2021){
+    this._div.innerHTML = '<h5>Veg Farm 2021</h5>' + (props ? "Total: " + props.v2021_Total
+        : 'Select a region');
+   }
+         
+    }
+
+info.addTo(map);
+
+function onEachFeature(feature, layer) {
+    
+    layer.on({
+        click: highlightFeature
+    });
+}
+
+function highlightFeature(e) {
+    var layer = e.target;
+    
+    info.update(layer.feature.properties);
+    
+    geojson.resetStyle(lastTarget);
+  
+
+    layer.setStyle({
+        weight: 5,
+        color: '#FFF',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+    
+
+    lastTarget = layer;
+}
+
+</script>
+
+
+</body>
+</html>
