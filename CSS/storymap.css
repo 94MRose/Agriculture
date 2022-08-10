@@ -147,5 +147,9 @@ iframe {
   height: 100%;
 }
 
+.pieChart{
+  max-width: 500px;
+}
+
 
 

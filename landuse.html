@@ -70,6 +70,16 @@
       };
     }
 
+    function style21(feature) {      
+      return{
+        fillColor: getColor(feature.properties.Prime_Landuse21, "Landuse"),
+        weight: 2,
+        opacity: 1,
+        color: 'black',
+        fillOpacity: 0.7
+      };
+    }
+
     function landLossStyle(feature) {
       return{
         fillColor: getColor(feature.properties.Land_Change, "LandLoss"),
@@ -93,6 +103,9 @@
     }
     if(map.hasLayer(landChange)){
         landChange.resetStyle(lastTarget);
+    }
+    if( map.hasLayer(landuse21)){
+        landuse21.resetStyle(lastTarget);
     }
 
     // map.fitBounds(e.target.getBounds());
@@ -119,6 +132,9 @@ function resetHighlight(e) {
     }
     if(map.hasLayer(landChange)){
         landChange.resetStyle(lastTarget);
+    }
+    if( map.hasLayer(landuse21)){
+        landuse21.resetStyle(lastTarget);
     }
 
   
@@ -151,6 +167,11 @@ var landChange = new L.GeoJSON(landuse, {
     onEachFeature: onEachFeature
 });
 
+var landuse21 = new L.GeoJSON(landuse, {
+    style: style21,
+    onEachFeature: onEachFeature
+});
+
 //Layer controller
 var currentLayerID = 76;
 map.on('baselayerchange', function (e) {
@@ -160,7 +181,8 @@ map.on('baselayerchange', function (e) {
 });
 
 var overlayMaps = {
-    "Primary Landuse": geojson,
+    "Primary Landuse 2021": landuse21,
+    "Primary Landuse 2016": geojson,
     "Change In Crop Land": landChange
   };
 
@@ -177,15 +199,244 @@ info.onAdd = function (map) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
+    pieChart = "Data Unavailable";
     if(map.hasLayer(geojson)) {
-         this._div.innerHTML = '<h4>Region: </h4>' +  (props ?
-        '<b>' + props.CCSNAME + '</b><br />'  + '<img src= "Images/KawarthaLakesLanduse.PNG" >'
-        : 'Hover over a region');
+        if(props){
+            switch(props.CCSNAME){
+                case "Addington Highlands":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Addington Highlands LU 2016.png">';
+                break;
+                case "Asphodel-Norwood":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Asphodel-Norwood LU 2016.png">';
+                break;
+                case "Bancroft":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Bancroft LU 2016.png">';
+                break;
+                case "Bracebridge":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Bracebridge LU 2016.png">';
+                break;
+                case "Carlow/Mayo":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Carlow_Mayo LU 2016.png">';
+                break;
+                case "Central Frontenac":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Central Frontenac LU 2016.png">';
+                break;
+                case "Centre Hastings":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Centre Hastings LU 2016.png">';
+                break;
+                case "Douro-Dummer":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Douro-Dummer LU 2016.png">';
+                break;
+                case "Gravenhurst":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Gravenhurst LU 2016.png">';
+                break;
+                case "Greater Madawaska":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Greater Madawaska LU 2016.png">';
+                break;
+                case "Hastings Highlands":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Hastings Highland LU 2016.png">';
+                break;
+                case "Havelock-Belmont-Methuen":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/HBM LU 2016.png">';
+                break;
+                case "Highlands East":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Highlands East LU 2016.png">';
+                break;
+                case "Kawartha Lakes":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/KL LU 2016.png">';
+                break;
+                case "Lanark Highlands":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Lanark Highlands LU 2016.png">';
+                break;
+                case "Madoc":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Madoc LU 2016.png">';
+                break;
+                case "Magnetawan":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Magnetawan LU 2016.png">';
+                break;
+                case "Marmora and Lake":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Marmora LU 2016.png">';
+                break;
+                case "Minden Hills":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Minden Hills LU 2016.png">';
+                break;
+                case "Muskoka Lakes":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Muskoka Lakes LU 2016.png">';
+                break;
+                case "North Frontenac":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/North Frontenac LU 2016.png">';
+                break;
+                case "Ramara":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Ramara LU 2016.png">';
+                break;
+                case "Rideau Lakes":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Rideau Lakes LU 2016.png">';
+                break;
+                case "Seguin":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Seguin LU 2016.png">';
+                break;
+                case "Selwyn":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Selwyn LU 2016.png">';
+                break;
+                case "Severn":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Severn LU 2016.png">';
+                break;
+                case "South Frontenac":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/South Frontenac LU 2016.png">';
+                break;
+                case "Stirling-Rawdon":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Stirling-Rawdon LU 2016.png">';
+                break;
+                case "Stone Mills":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Stone Mills LU 2016.png">';
+                break;
+                case "Tay Valley":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Tay valley LU 2016.png">';
+                break;
+                case "Trent Hills":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Trent Hills LU 2016.png">';
+                break;
+                case "Trent Lakes":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Trent Lakes LU 2016.png">';
+                break;
+                case "Tweed":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Tweed LU 2016.png">';
+                break;
+                case "Tyendinaga":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Tyendinaga LU 2016.png">';
+                break;
+                case "Whitestone":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Whitestone LU 2016.png">';
+                break;
+
+
+            }
+        }
+        this._div.innerHTML = '<h4>Region: </h4>' +  (props ?
+        '<b>' + props.CCSNAME + '</b><br />'  + pieChart
+        : 'Select a region');
     }
     if(map.hasLayer(landChange)){
         this._div.innerHTML = '<h4>Region: </h4>' +  (props ?
-        '<b>' + props.CCSNAME + '</b><br />'  + '<p>Crop Land 2006:<br>Crop Land 2016:</p>'
-        : 'Hover over a region');
+        '<b>' + props.CCSNAME + "<br>Change Percentage: " + props.Land_Change
+        : 'Select a region');
+        //+ '</b><br />'  + '<p>Crop Land 2006:<br>Crop Land 2016:</p>'
+    }
+    if(map.hasLayer(landuse21)) {
+        if(props){
+            switch(props.CCSNAME){
+                case "Addington Highlands":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Addington Highlands LU 2021.png">';
+                break;
+                case "Asphodel-Norwood":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Asphodel-Norwood LU 2021.png">';
+                break;
+                case "Bancroft":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Bancroft LU 2021.png">';
+                break;
+                case "Bracebridge":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Bracebridge LU 2016.png">';
+                break;
+                case "Carlow/Mayo":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Carlow_Mayo LU 2021.png">';
+                break;
+                case "Central Frontenac":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Central Frontenac LU 2021.png">';
+                break;
+                case "Centre Hastings":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Centre Hastings LU 2021.png">';
+                break;
+                case "Douro-Dummer":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Douro-Dummer LU 2021.png">';
+                break;
+                case "Gravenhurst":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Gravenhurst LU 2016.png">';
+                break;
+                case "Greater Madawaska":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Greater Madawaska LU 2021.png">';
+                break;
+                case "Hastings Highlands":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Hastings Highland LU 2021.png">';
+                break;
+                case "Havelock-Belmont-Methuen":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/HBM LU 2021.png">';
+                break;
+                case "Highlands East":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Highlands East LU 2021.png">';
+                break;
+                case "Kawartha Lakes":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/KL LU 2021.png">';
+                break;
+                case "Lanark Highlands":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Lanark Highlands LU 2021.png">';
+                break;
+                case "Madoc":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Madoc LU 2021.png">';
+                break;
+                case "Magnetawan":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Magnetawan LU 2021.png">';
+                break;
+                case "Marmora and Lake":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Marmora LU 2021.png">';
+                break;
+                case "Minden Hills":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Minden Hills LU 2021.png">';
+                break;
+                case "Muskoka Lakes":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Musk Lakes LU 2021.png">';
+                break;
+                case "North Frontenac":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/North Frontenac LU 2021.png">';
+                break;
+                case "Ramara":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Ramara LU 2021.png">';
+                break;
+                case "Rideau Lakes":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Rideau Lakes LU 2021.png">';
+                break;
+                case "Seguin":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Seguin LU 2021.png">';
+                break;
+                case "Selwyn":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Selwyn LU 2021.png">';
+                break;
+                case "Severn":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Severn LU 2021.png">';
+                break;
+                case "South Frontenac":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/South Frontenac LU 2021.png">';
+                break;
+                case "Stirling-Rawdon":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Stirling-Rawdon LU 2021.png">';
+                break;
+                case "Stone Mills":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Stone Mills LU 2021.png">';
+                break;
+                case "Tay Valley":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Tay valley LU 2021.png">';
+                break;
+                case "Trent Hills":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Trent Hills LU 2021.png">';
+                break;
+                case "Trent Lakes":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Trent Lakes LU 2021.png">';
+                break;
+                case "Tweed":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Tweed LU 2021.png">';
+                break;
+                case "Tyendinaga":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Tyendinaga LU 2021.png">';
+                break;
+                case "Whitestone":
+                pieChart = '<img class="pieChart" src= "Images/PieCharts/Whitestone LU 2021.png">';
+                break;
+
+
+            }
+        }
+         this._div.innerHTML = '<h4>Region: </h4>' +  (props ?
+        '<b>' + props.CCSNAME + '</b><br />'  + pieChart
+        : 'Select a region');
     }
    
 };
@@ -197,7 +448,7 @@ var legend = L.control({position: 'bottomright'});
 
 legend.onAdd = function (map) {
 
-    if(map.hasLayer(geojson)){
+    if(map.hasLayer(geojson)||map.hasLayer(landuse21)){
         var div = L.DomUtil.create('div', 'info legend'),
         val = ["Woods\/Wetlands", "Alfalfa\/Hay", "Pasture", "Soybean\/Wheat\/Corn"],
         labels = [];
@@ -219,7 +470,7 @@ function UpdateLegend(){
     // div.innerHTML = '<H4> Change the legend</h4>';
     div.innerHTML = "";
 
-    if(map.hasLayer(geojson)){
+    if(map.hasLayer(geojson)||map.hasLayer(landuse21)){
         var val = ["Woods\/Wetlands", "Alfalfa\/Hay", "Pasture", "Soybean\/Wheat\/Corn"];
         var labels = [];
 

@@ -14,7 +14,7 @@
    crossorigin=""></script>
 
 <!-- Add JQuery -->
-<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>  
+<!-- <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script> -->  
 
 <link rel="stylesheet" href="CSS/storymap.css" />
 
@@ -48,68 +48,22 @@
     var geojson;
     var year = 2006;
     var lastTarget;
-
-    // function getColor(val, type) {
+    max = 0;
+    topVegList = [];
+    vegetables = ["Sweet Corn", "Tomatoes", "Cucumbers", "Grean Peas", "Green Beans", "Cabbage", "Chinese Cabbage", "Cauliflower", "Broccoli", "Brussel Sprouts", "Carrots", "Turnips", "Beets", "Radishes", "Shallots", "Onions", "Celery", "Lettuce", "Spinach", "Peppers", "Pumpkins", "Squash", "Asparagus"];
+        color = '#FFFFFF';
         
-    //    if(type == "2006"){
-    //     // return val < 29050 ? "#1a9641":
-    //     // val < 45750 ? "#a6d96a":
-    //     // val < 62450 ? "#ffffc0":
-    //     // val < 79150 ? "#fdae61":
-    //     // "#d7191c";
-    //     return "#1a9641";
-    //    }
-    //    if(type == "2011"){
-    //     return val < 30300 ? "#1a9641":
-    //     val < 47614 ? "#a6d96a":
-    //     val < 64928 ? "#ffffc0":
-    //     val < 82242 ? "#fdae61":
-    //     "#d7191c";
-    //    }
-    //    if(type == "2016"){
-    //     return val < 42863 ? "#1a9641":
-    //     val < 77111 ? "#a6d96a":
-    //     val < 111359 ? "#ffffc0":
-    //     val < 145607 ? "#fdae61":
-    //     "#d7191c";
-    //    }
-
-    // }
 
     function getColor(val, type) {
         
-        vegetables = ["Sweet Corn", "Tomatoes", "Cucumbers", "Grean Peas", "Green Beans", "Cabbage", "Chinese Cabbage", "Cauliflower", "Broccoli", "Brussel Sprouts", "Carrots", "Turnips", "Beets", "Radishes", "Shallots", "Onions", "Peppers", "Pumpkins", "Squash", "Asparagus"];
-        color = '#FFFFFF';
+        
         topVeg = 0;
-        max = 0;
-       if(type == "2006"){
-        // color = '#FFFFFF';
-        // topVeg = 0;
-        // max = val.v2006_SweetCorn;
-        values = [val.v2006_SweetCorn, val.v2006_Tomatoes, val.v2006_Cucumbers, val.v2006_GreenPea, val.v2006_GreenBeans, val.v2006_Cabbage, val.v2006_ChineseCabbage, val.v2006_Cauliflower, val.v2006_Broccoli, val.v2006_BrusselSprouts, val.v2006_Carrots, val.v2006_Turnips, val.v2006_Beets, val.v2006_Radishes, val.v2006_Shallots, val.v2006_Onions, val.v2006_Celery, val.v2006_Lettuce, val.v2006_Spinach, val.v2006_Peppers, val.v2006_Pumpkins, val.v2006_Squash, val.v2006_Asparagus];
-
+        
+        getTopVeg(val, type);
         // console.log(val.CCSNAME)
         // console.log(vegetables[topVeg]);
         // console.log(max);
-               
-       }
-       if(type == "2011"){
-        values = [val.v2011_SweetCorn, val.v2011_Tomatoes, val.v2011_Cucumbers, val.v2011_GreenPea, val.v2011_GreenBeans, val.v2011_Cabbage, val.v2011_ChineseCabbage, val.v2011_Cauliflower, val.v2011_Broccoli, val.v2011_BrusselSprouts, val.v2011_Carrots, val.v2011_Turnips, val.v2011_Beets, val.v2011_Radishes, val.v2011_Shallots, val.v2011_Onions, val.v2011_Celery, val.v2011_Lettuce, val.v2011_Spinach, val.v2011_Peppers, val.v2011_Pumpkins, val.v2011_Squash, val.v2011_Asparagus];
-        
-       }
-       if(type == "2016"){
-        values = [val.v2016_SweetCorn, val.v2016_Tomatoes, val.v2016_Cucumbers, val.v2016_GreenPea, val.v2016_GreenBeans, val.v2016_Cabbage, val.v2016_ChineseCabbage, val.v2016_Cauliflower, val.v2016_Broccoli, val.v2016_BrusselSprouts, val.v2016_Carrots, val.v2016_Turnips, val.v2016_Beets, val.v2016_Radishes, val.v2016_Shallots, val.v2016_Onions, val.v2016_Celery, val.v2016_Lettuce, val.v2016_Spinach, val.v2016_Peppers, val.v2016_Pumpkins, val.v2016_Squash, val.v2016_Asparagus];
-       }
-       if(type == "2021"){
-        values = [val.v2021_SweetCorn, val.v2021_Tomatoes, val.v2021_Cucumbers, val.v2021_GreenPea, val.v2021_GreenBeans, val.v2021_Cabbage, val.v2021_ChineseCabbage, val.v2021_Cauliflower, val.v2021_Broccoli, val.v2021_BrusselSprouts, val.v2021_Carrots, val.v2021_Turnips, val.v2021_Beets, val.v2021_Radishes, val.v2021_Shallots, val.v2021_Onions, val.v2021_Celery, val.v2021_Lettuce, val.v2021_Spinach, val.v2021_Peppers, val.v2021_Pumpkins, val.v2021_Squash, val.v2021_Asparagus];
-       }
 
-        for(i=0; i<values.length; i++){
-            if(values[i]>max){
-                max = values[i];
-                topVeg = i;
-            }
-        }
        switch (vegetables[topVeg]){
             case "Sweet Corn":
                 color = "#f9f32d"
@@ -172,8 +126,42 @@
                 color = "#6090e2"
                 break;
         }
+ 
         return color;
 
+    }
+
+    function getTopVeg(val, type){
+        max = 0;
+        topVegList.length = 0;
+       if(type == "2006"){
+        values = [val.v2006_SweetCorn, val.v2006_Tomatoes, val.v2006_Cucumbers, val.v2006_GreenPea, val.v2006_GreenBeans, val.v2006_Cabbage, val.v2006_ChineseCabbage, val.v2006_Cauliflower, val.v2006_Broccoli, val.v2006_BrusselSprouts, val.v2006_Carrots, val.v2006_Turnips, val.v2006_Beets, val.v2006_Radishes, val.v2006_Shallots, val.v2006_Onions, val.v2006_Celery, val.v2006_Lettuce, val.v2006_Spinach, val.v2006_Peppers, val.v2006_Pumpkins, val.v2006_Squash, val.v2006_Asparagus];              
+       }
+       if(type == "2011"){
+        values = [val.v2011_SweetCorn, val.v2011_Tomatoes, val.v2011_Cucumbers, val.v2011_GreenPea, val.v2011_GreenBeans, val.v2011_Cabbage, val.v2011_ChineseCabbage, val.v2011_Cauliflower, val.v2011_Broccoli, val.v2011_BrusselSprouts, val.v2011_Carrots, val.v2011_Turnips, val.v2011_Beets, val.v2011_Radishes, val.v2011_Shallots, val.v2011_Onions, val.v2011_Celery, val.v2011_Lettuce, val.v2011_Spinach, val.v2011_Peppers, val.v2011_Pumpkins, val.v2011_Squash, val.v2011_Asparagus];      
+       }
+       if(type == "2016"){
+        values = [val.v2016_SweetCorn, val.v2016_Tomatoes, val.v2016_Cucumbers, val.v2016_GreenPea, val.v2016_GreenBeans, val.v2016_Cabbage, val.v2016_ChineseCabbage, val.v2016_Cauliflower, val.v2016_Broccoli, val.v2016_BrusselSprouts, val.v2016_Carrots, val.v2016_Turnips, val.v2016_Beets, val.v2016_Radishes, val.v2016_Shallots, val.v2016_Onions, val.v2016_Celery, val.v2016_Lettuce, val.v2016_Spinach, val.v2016_Peppers, val.v2016_Pumpkins, val.v2016_Squash, val.v2016_Asparagus];
+       }
+       if(type == "2021"){
+        values = [val.v2021_SweetCorn, val.v2021_Tomatoes, val.v2021_Cucumbers, val.v2021_GreenPea, val.v2021_GreenBeans, val.v2021_Cabbage, val.v2021_ChineseCabbage, val.v2021_Cauliflower, val.v2021_Broccoli, val.v2021_BrusselSprouts, val.v2021_Carrots, val.v2021_Turnips, val.v2021_Beets, val.v2021_Radishes, val.v2021_Shallots, val.v2021_Onions, val.v2021_Celery, val.v2021_Lettuce, val.v2021_Spinach, val.v2021_Peppers, val.v2021_Pumpkins, val.v2021_Squash, val.v2021_Asparagus];
+       }
+
+        for(i=0; i<values.length -1; i++){
+            if(parseInt(values[i])>max){
+                max = values[i];
+                topVeg = i;
+            }
+        }
+
+        for(i=0; i<values.length-1; i++){
+            if(values[i]==max){                
+                topVegList.push("<br>"+vegetables[i]);
+            }
+        }
+
+        
+        return topVeg;
     }
 
     function style(feature) {  
@@ -237,22 +225,35 @@ info.update = function (props) {
 
 
    if(year== 2006){
-    this._div.innerHTML = '<h5>Veg Farm 2006</h5>' + (props ? "Total: " + props.v2006_Total
+    if(props){
+        getTopVeg(props, "2006");
+    }
+    this._div.innerHTML = '<h5>Veg Farm 2006</h5>' + (props ? "<b>" +props.CCSNAME + "</b><br>Total Farms Reporting: " + props.v2006_Total + "<br>Farms producing top Veg: " + max + "<br>Top Vegetables: " + topVegList
         : 'Select a region');
    }
    else if(year== 2011){
-    this._div.innerHTML = '<h5>Veg Farm 2011</h5>' + (props ? "Total: " + props.v2011_Total
+    if(props){
+        getTopVeg(props, "2011");
+    }
+    this._div.innerHTML = '<h5>Veg Farm 2011</h5>' + (props ? "<b>" +props.CCSNAME + "</b><br>Total Farms Reporting: " + props.v2011_Total + "<br>Farms producing top Veg: " + max + "<br>Top Vegetables: " + topVegList
         : 'Select a region');
    }
    else if(year== 2016){
-    this._div.innerHTML = '<h5>Veg Farm 2016</h5>' + (props ? "Total: " + props.v2016_Total
+    if(props){
+        getTopVeg(props, "2016");
+    }
+    this._div.innerHTML = '<h5>Veg Farm 2016</h5>' + (props ? "<b>" +props.CCSNAME + "</b><br>Total Farms Reporting: " + props.v2016_Total + "<br>Farms producing top Veg: " + max + "<br>Top Vegetables: " + topVegList
         : 'Select a region');
    }
    else if(year== 2021){
-    this._div.innerHTML = '<h5>Veg Farm 2021</h5>' + (props ? "Total: " + props.v2021_Total
+    if(props){
+        getTopVeg(props, "2021");
+    }
+    this._div.innerHTML = '<h5>Veg Farm 2021</h5>' + (props ? "<b>" +props.CCSNAME + "</b><br>Total Farms Reporting: " + props.v2021_Total + "<br>Farms producing top Veg: " + max + "<br>Top Vegetables: " + topVegList
         : 'Select a region');
    }
-         
+        console.log("Info Update");
+         console.log(max);
     }
 
 info.addTo(map);

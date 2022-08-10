@@ -36,7 +36,8 @@
     <label for="year">Year: </label>
     <input type="radio" name="yearS" value="2006" checked> 2006
     <input type="radio" name="yearS" value="2011" > 2011
-    <input type="radio" name="yearS" value="2016" > 2016<br><br>
+    <input type="radio" name="yearS" value="2016" > 2016
+    <input type="radio" name="yearS" value="2021" > 2021<br><br>
 
 </form>
 
@@ -76,6 +77,13 @@
         val < 145607 ? "#fdae61":
         "#d7191c";
        }
+       if(type == "2021"){
+        return val < 50000 ? "#1a9641":
+        val < 100000 ? "#a6d96a":
+        val < 130000 ? "#ffffc0":
+        val < 170000 ? "#fdae61":
+        "#d7191c";
+       }
 
     }
 
@@ -107,6 +115,15 @@
         fillOpacity: 0.7
       };
     }  
+     if(year == 2021)  {
+      return{
+        fillColor: getColor(feature.properties.Expense2021, "2021"),
+        weight: 2,
+        opacity: 1,
+        color: 'black',
+        fillOpacity: 0.7
+      };
+    }  
       
     }
 
@@ -131,15 +148,19 @@ info.update = function (props) {
 
 
    if(year== 2006){
-    this._div.innerHTML = '<h5>Expenses Per Farm 2006</h5>' + (props ? "Regional Average Expenses: $" + props.Expense2006 + '<br /> ' + "TLB average is $52,325" + "<br /> Ontario average is $154,584" + "<br /> Canada average is $158,852"
+    this._div.innerHTML = '<h5>Expenses Per Farm 2006</h5>' + (props ? "<b>" + props.CCSNAME + "</b><br>Regional Average Expenses: $" + props.Expense2006 + '<br /> ' + "TLB average is $52,325" + "<br /> Ontario average is $154,584" + "<br /> Canada average is $158,852"
         : 'Select a region');
    }
    else if(year== 2011){
-    this._div.innerHTML = '<h5>Expenses Per Farm 2011</h5>' + (props ? "Regional Average Expenses: $" + props.Expense2011 + '<br /> ' + "TLB average is $63,104" + "<br /> Ontario average is $191,836" + "<br /> Canada average is $205,080"
+    this._div.innerHTML = '<h5>Expenses Per Farm 2011</h5>' + (props ? "<b>" + props.CCSNAME + "</b><br>Regional Average Expenses: $" + props.Expense2011 + '<br /> ' + "TLB average is $63,104" + "<br /> Ontario average is $191,836" + "<br /> Canada average is $205,080"
         : 'Select a region');
    }
    else if(year== 2016){
-    this._div.innerHTML = '<h5>Expenses Per Farm 2016</h5>' + (props ? "Regional Average Expenses: $" + props.Expense2016 + '<br /> ' + "TLB average is $87,241" + "<br /> Ontario average is $257,862" + "<br /> Canada average is $296,961"
+    this._div.innerHTML = '<h5>Expenses Per Farm 2016</h5>' + (props ? "<b>" + props.CCSNAME + "</b><br>Regional Average Expenses: $" + props.Expense2016 + '<br /> ' + "TLB average is $87,241" + "<br /> Ontario average is $257,862" + "<br /> Canada average is $296,961"
+        : 'Select a region');
+   }
+   else if(year== 2021){
+    this._div.innerHTML = '<h5>Expenses Per Farm 2021</h5>' + (props ? "<b>" + props.CCSNAME + "</b><br>Regional Average Expenses: $" + props.Expense2021 + '<br /> ' + "TLB average is $114,702" + "<br /> Ontario average is $352,933" + "<br /> Canada average is $396,633"
         : 'Select a region');
    }
          
