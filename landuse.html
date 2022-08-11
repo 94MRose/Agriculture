@@ -183,7 +183,7 @@ map.on('baselayerchange', function (e) {
 var overlayMaps = {
     "Primary Landuse 2021": landuse21,
     "Primary Landuse 2016": geojson,
-    "Change In Crop Land": landChange
+    "Change In Crop Land(2006-2016)": landChange
   };
 
   L.control.layers(overlayMaps).addTo(map);
@@ -318,7 +318,7 @@ info.update = function (props) {
     }
     if(map.hasLayer(landChange)){
         this._div.innerHTML = '<h4>Region: </h4>' +  (props ?
-        '<b>' + props.CCSNAME + "<br>Change Percentage: " + props.Land_Change
+        '<b>' + props.CCSNAME + "<br>Change Percentage(2006-2016): " + props.Land_Change+"%"
         : 'Select a region');
         //+ '</b><br />'  + '<p>Crop Land 2006:<br>Crop Land 2016:</p>'
     }
