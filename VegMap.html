@@ -13,14 +13,10 @@
    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
    crossorigin=""></script>
 
-<!-- Add JQuery -->
-<!-- <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script> -->  
-
 <link rel="stylesheet" href="CSS/storymap.css" />
 
 <!-- Geometric Data -->
 <script src='Data/TLBVegCount.geojson'></script>
-<script src='Data/TLB Expenses.geojson'></script>
 
 </head>
 
@@ -55,14 +51,10 @@
         
 
     function getColor(val, type) {
-        
-        
+               
         topVeg = 0;
         
         getTopVeg(val, type);
-        // console.log(val.CCSNAME)
-        // console.log(vegetables[topVeg]);
-        // console.log(max);
 
        switch (vegetables[topVeg]){
             case "Sweet Corn":
@@ -252,8 +244,7 @@ info.update = function (props) {
     this._div.innerHTML = '<h5>Veg Farm 2021</h5>' + (props ? "<b>" +props.CCSNAME + "</b><br>Total Farms Reporting: " + props.v2021_Total + "<br>Farms producing top Veg: " + max + "<br>Top Vegetables: " + topVegList
         : 'Select a region');
    }
-        console.log("Info Update");
-         console.log(max);
+
     }
 
 info.addTo(map);

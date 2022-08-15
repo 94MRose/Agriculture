@@ -19,7 +19,6 @@
 <link rel="stylesheet" href="CSS/storymap.css" />
 
 <!-- Geometric Data -->
-<script src='Data/Landuse.geojson'></script>
 <script src='Data/TLBPaidLabour.geojson'></script>
 
 </head>
@@ -34,31 +33,6 @@
     subdomains: ['a','b','c']
 }).addTo( map );
 
-    // map.setView([44.7389, -78.3922], 8);
-
-    
-
-    
-
-
-    // function getColor(val, type) {
-    //     if(type == "Landuse"){
-    //         return val == "Woods\/Wetlands" ? '#a17015' :
-    //     val == "Alfalfa\/Hay" ? '#b6d6e1' :
-    //     val == "Pasture" ? '#5e8ae7' :
-    //     val == "Soybean\/Wheat\/Corn"? '#538f34':
-    //     '#fff';
-    //     }
-    //    if(type == "LandLoss"){
-    //     return val > 25 ? "#1a9641":
-    //     val > 0 ? "#a6d96a":
-    //     val > -25 ? "#ffffc0":
-    //     val > - 50 ? "#fdae61":
-    //     "#d7191c";
-    //    }
-
-    // }
-
     function getColor(val) {     
         return val == null ? "#000":
         val > 60 ? "#d7191c":
@@ -67,19 +41,8 @@
         val > -30 ? "#dcf09e":
         val > -60 ? "#8acc62":
         val < -60 ? "#1a9641":
-
         "#000";
     }
-
-    // function style(feature) {      
-    //   return{
-    //     fillColor: getColor(feature.properties.Prime_Landuse, "Landuse"),
-    //     weight: 2,
-    //     opacity: 1,
-    //     color: 'black',
-    //     fillOpacity: 0.7
-    //   };
-    // }
 
     function style(feature) {      
       return{
@@ -91,16 +54,6 @@
       };
     }
 
-    // function landLossStyle(feature) {
-    //   return{
-    //     fillColor: getColor(feature.properties.Land_Change, "LandLoss"),
-    //     weight: 2,
-    //     opacity: 1,
-    //     color: 'black',
-    //     fillOpacity: 0.7
-    //   };
-    // }
-
     var geojson;
 
     function highlightFeature(e) {
@@ -110,11 +63,6 @@
     if( map.hasLayer(geojson)){
         geojson.resetStyle(lastTarget);
     }
-    // if(map.hasLayer(landChange)){
-    //     landChange.resetStyle(lastTarget);
-    // }
-
-    // map.fitBounds(e.target.getBounds());
 
     layer.setStyle({
         weight: 5,
@@ -134,16 +82,9 @@ function resetHighlight(e) {
     if( map.hasLayer(geojson)){
         geojson.resetStyle(lastTarget);
     }
-    // if(map.hasLayer(landChange)){
-    //     landChange.resetStyle(lastTarget);
-    // }
 
     info.update();
 }
-
-// function zoomToFeature(e) {
-//     map.fitBounds(e.target.getBounds());
-// }
 
 function onEachFeature(feature, layer) {
    
@@ -161,26 +102,6 @@ geojson = L.geoJson(labour, {
     onEachFeature: onEachFeature
 }).addTo(map);
 
-// var landChange = new L.GeoJSON(landuse, {
-//     style: landLossStyle,
-//     onEachFeature: onEachFeature
-// });
-
-//Layer controller
-// var currentLayerID = 76;
-// map.on('baselayerchange', function (e) {
-//    currentLayerID = e.layer._leaflet_id;
-//    console.log(currentLayerID); 
-//    UpdateLegend();
-// });
-
-// var overlayMaps = {
-//     "Primary Landuse": geojson,
-//     "Change In Crop Land": landChange
-//   };
-
-  // L.control.layers(overlayMaps).addTo(map);
-
 //Setup for info panel
 var info = L.control();
 
@@ -192,19 +113,9 @@ info.onAdd = function (map) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
-    // if(map.hasLayer(geojson)) {
-    //      this._div.innerHTML = '<h4>Region: </h4>' +  (props ?
-    //     '<b>' + props.CCSNAME + '</b><br />'  + '<img src= "Images/KawarthaLakesLanduse.PNG" >'
-    //     : 'Hover over a region');
-    // }
-    // if(map.hasLayer(landChange)){
-    //     this._div.innerHTML = '<h4>Region: </h4>' +  (props ?
-    //     '<b>' + props.CCSNAME + '</b><br />'  + '<p>Crop Land 2006:<br>Crop Land 2016:</p>'
-    //     : 'Hover over a region');
-    // }
 
     this._div.innerHTML = '<h4>Region: </h4>' +  (props ?
-        '<b>' + props.CCSNAME + '</b><br />' +'10 Year Loss: ' + props.PercentChange + "%"
+        '<b>' + props.CCSNAME + '</b><br />' +'10 Year Change: ' + (props.PercentChange*-1) + "%"
         : 'Select a region');
    
 };
@@ -216,18 +127,6 @@ var legend = L.control({position: 'bottomright'});
 
 legend.onAdd = function (map) {
 
-    // if(map.hasLayer(geojson)){
-    //     var div = L.DomUtil.create('div', 'info legend'),
-    //     val = ["Woods\/Wetlands", "Alfalfa\/Hay", "Pasture", "Soybean\/Wheat\/Corn"],
-    //     labels = [];
-
-    // //Legend Content
-    // for (var i = 0; i < val.length; i++) {
-    //     div.innerHTML +=
-    //         '<i style="background:' + getColor(val[i], "Landuse") + '"></i> ' +
-    //         val[i] + (val[i + 1] ? ''  + '<br><br>' : '');
-    // }
-    // }
     var div = L.DomUtil.create('div', 'info legend');
     var val = [-90, -50, -20, 20, 50, 90];
     var labels = ["> 60% Growth", "30% - 60% Growth", "0 - 30% Growth", "0 - 30% Loss", "30% - 60% Loss", "> 60% Loss"];
@@ -244,31 +143,9 @@ legend.onAdd = function (map) {
 
 function UpdateLegend(){
     var div = legend.getContainer();
-    // div.innerHTML = '<H4> Change the legend</h4>';
+
     div.innerHTML = "";
 
-    // if(map.hasLayer(geojson)){
-    //     var val = ["Woods\/Wetlands", "Alfalfa\/Hay", "Pasture", "Soybean\/Wheat\/Corn"];
-    //     var labels = [];
-
-    // //Legend Content
-    // for (var i = 0; i < val.length; i++) {
-    //     div.innerHTML +=
-    //         '<i style="background:' + getColor(val[i], "Landuse") + '"></i> ' +
-    //         val[i] + (val[i + 1] ? ''  + '<br><br>' : '');
-    // }
-    // }
-    // if(map.hasLayer(landChange)){
-    //     var val = [40, 20, -20, -40, -60];
-    //     var labels = ["25% - 98%", "0 - 25%", "0 - -25%", "-25% - -50%", "-50% - -68%"];
-
-    // //Legend Content
-    // for (var i = 0; i < val.length; i++) {
-    //     div.innerHTML +=
-    //         '<i style="background:' + getColor(val[i], "LandLoss") + '"></i> ' +
-    //         labels[i] + (val[i + 1] ? ''  + '<br><br>' : '');
-    // }
-    // }
     var val = [-90, -50, -20, 20, 50, 90];
     var labels = ["> 60% Growth", "30% - 60% Growth", "0 - 30% Growth", "0 - 30% Loss", "30% - 60% Loss", "> 60% Loss"];
     //Legend Content
